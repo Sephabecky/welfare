@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ruiru SDA Welfare System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0fdf4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      background-color: #047857;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header img {
+      height: 50px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 900px;
+      padding: 2rem;
+    }
+
+   
+    
+#welcomeScreen {
+      background: url('together.avif') no-repeat center center;
+      background-size: cover;
+      
+      padding: 3rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    h1, h2, h3 {
+      text-align: center;
+    }
+  }
+    .button-group {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .button-right {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+    }
+
+    button {
+      padding: 1rem 2rem;
+      margin: 0.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    .green {
+      background-color: #047857;
+      color: white;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .box-button {
+      background-color: #047857;
+      color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+      width: 250px;
+      font-size: 18px;
+      margin: 1rem auto;
+      display: block;
+    }
+
+    .download-btn {
+      background-color: #065f46;
+      color: white;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    input {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 1rem;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    th {
+      background-color: #047857;
+      color: white;
+    }
+
+    .section {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="sda logo.webp" alt="SDA Logo" />
+    <h1>Ruiru SDA Welfare System</h1>
+  </header>
+
+  <main>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen">
+      <h2>Welcome to Ruiru SDA Welfare System</h2>
+      <div class="button-right">
+        <button class="green" onclick="showMainMenu()">Continue ➡</button>
+      </div>
+    </div>
+
+    <!-- Main Menu -->
+    <div id="mainMenu" class="hidden">
+      <button onclick="showAdminSection()" class="box-button">System Administrator</button>
+      <button onclick="showMemberSection()" class="box-button">Welfare Member</button>
+    </div>
+
+    <!-- Admin Login -->
+    <div id="adminLogin" class="section hidden">
+      <h3>Enter Administrator Passcode:</h3>
+      <input type="password" id="adminPasscode">
+      <button onclick="verifyAdmin()" class="green">Enter</button>
+      <p id="adminError" style="color:red"></p>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="section hidden">
+      <h3>Register Member</h3>
+      <label for="regName">Name:</label>
+      <input type="text" id="regName" placeholder="Name">
+      <label for="regPhone">Phone Number:</label>
+      <input type="text" id="regPhone" placeholder="Phone Number">
+      <button onclick="registerMember()" class="green">Register</button>
+
+      <h3>Update Contributions</h3>
+      <label for="contribName">Name:</label>
+      <input type="text" id="contribName" placeholder="Name">
+      <label for="contribPhone">Phone Number:</label>
+      <input type="text" id="contribPhone" placeholder="Phone Number">
+      <label for="contribTarget">Target Amount:</label>
+      <input type="number" id="contribTarget" placeholder="Target Amount">
+      <label for="contribAmount">Amount Contributed:</label>
+      <input type="number" id="contribAmount" placeholder="Amount Contributed">
+      <button onclick="updateContribution()" class="green">Update</button>
+
+      <table id="adminTable">
+        <thead>
+          <tr>
+            <th>Name</th><th>Phone</th><th>Target</th><th>Contributed</th><th>Balance</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="button-group">
+        <button class="download-btn" onclick="downloadCSV()">📥 Download CSV</button>
+      </div>
+    </div>
+
+    <!-- Member Panel -->
+    <div id="memberPanel" class="section hidden">
+      <h3>Enter Your Welfare Name</h3>
+      <input type="text" id="memberSearchName">
+      <button onclick="searchMember()" class="green">View Record</button>
+      <table id="memberTable" class="hidden">
+        <thead>
+          <tr><th>Name</th><th>Phone</th><th>Target</th><th>Contributed</th><th>Balance</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <<script>
+  let members = {};
+
+  // Load data from localStorage when page loads
+  window.onload = () => {
+    const savedData = localStorage.getItem('welfareMembers');
+    if (savedData) {
+      members = JSON.parse(savedData);
+      displayAdminTable(); // If admin logs in later, data will be ready
+    }
+  };
+
+  function saveToLocalStorage() {
+    localStorage.setItem('welfareMembers', JSON.stringify(members));
+  }
+
+  function showMainMenu() {
+    document.getElementById('welcomeScreen').classList.add('hidden');
+    document.getElementById('mainMenu').classList.remove('hidden');
+  }
+
+  function showAdminSection() {
+    document.getElementById('mainMenu').classList.add('hidden');
+    document.getElementById('adminLogin').classList.remove('hidden');
+  }
+
+  function showMemberSection() {
+    document.getElementById('mainMenu').classList.add('hidden');
+    document.getElementById('memberPanel').classList.remove('hidden');
+  }
+
+  function verifyAdmin() {
+    const passcode = document.getElementById('adminPasscode').value;
+    if (passcode === '9898') {
+      document.getElementById('adminLogin').classList.add('hidden');
+      document.getElementById('adminPanel').classList.remove('hidden');
+      document.getElementById('adminError').textContent = "";
+      displayAdminTable();
+    } else {
+      document.getElementById('adminError').textContent = "Incorrect passcode.";
+    }
+  }
+
+  function registerMember() {
+    const name = document.getElementById('regName').value.trim();
+    const phone = document.getElementById('regPhone').value.trim();
+    if (!name || !phone) return alert("Fill in all fields");
+    if (!members[name]) {
+      members[name] = { phone, target: 0, contributed: 0 };
+      alert("Member registered.");
+      saveToLocalStorage();
+      displayAdminTable();
+    } else {
+      alert("Member already exists.");
+    }
+  }
+
+  function updateContribution() {
+    const name = document.getElementById('contribName').value.trim();
+    const phone = document.getElementById('contribPhone').value.trim();
+    const target = parseFloat(document.getElementById('contribTarget').value);
+    const amount = parseFloat(document.getElementById('contribAmount').value);
+    if (!name || !phone || isNaN(target) || isNaN(amount)) return alert("Fill all fields");
+    if (members[name]) {
+      members[name].phone = phone;
+      members[name].target = target;
+      members[name].contributed = amount;
+      alert("Contribution updated.");
+      saveToLocalStorage();
+      displayAdminTable();
+    } else {
+      alert("Member not found.");
+    }
+  }
+
+  function displayAdminTable() {
+    const tbody = document.querySelector('#adminTable tbody');
+    tbody.innerHTML = '';
+    for (const name in members) {
+      const { phone, target, contributed } = members[name];
+      const balance = target - contributed;
+      const row = `<tr><td>${name}</td><td>${phone}</td><td>${target}</td><td>${contributed}</td><td>${balance}</td></tr>`;
+      tbody.innerHTML += row;
+    }
+  }
+
+  function searchMember() {
+    const name = document.getElementById('memberSearchName').value.trim();
+    const data = members[name];
+    const tbody = document.querySelector('#memberTable tbody');
+    if (data) {
+      document.getElementById('memberTable').classList.remove('hidden');
+      tbody.innerHTML = `<tr><td>${name}</td><td>${data.phone}</td><td>${data.target}</td><td>${data.contributed}</td><td>${data.target - data.contributed}</td></tr>`;
+    } else {
+      alert("Member not found.");
+      document.getElementById('memberTable').classList.add('hidden');
+    }
+  }
+
+  function downloadCSV() {
+    let csv = "Name,Phone,Target,Contributed,Balance\n";
+    for (const name in members) {
+      const { phone, target, contributed } = members[name];
+      const balance = target - contributed;
+      csv += `${name},${phone},${target},${contributed},${balance}\n`;
+    }
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'welfare_contributions.csv';
+    link.click();
+  }
+</script>
+
+</body>
+</html>
