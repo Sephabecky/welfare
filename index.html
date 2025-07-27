@@ -34,16 +34,16 @@
       max-width: 900px;
       padding: 2rem;
     }
-img{
-  max-width:100%;
-  height:auto;
-}
-   
-    
+
+    img {
+      max-width:100%;
+      height:auto;
+    } 
+
     h1, h2, h3 {
       text-align: center;
     }
-  }
+
     .button-group {
       text-align: center;
       margin-top: 1.5rem;
@@ -112,6 +112,7 @@ img{
       font-weight: bold;
     }
 
+     
     table {
       width: 100%;
       margin-top: 1rem;
@@ -136,205 +137,208 @@ img{
 </head>
 <body>
 
-  <header>
-    <img src="sda logo.webp" alt="SDA Logo" />
-    <h1>Ruiru SDA Welfare System</h1>
-  </header>
+<header>
+  <img src="com.png" alt="SDA Logo" />
+  <h1>Ruiru SDA Welfare System</h1>
+</header>
 
-  <main>
-    <!-- Welcome Screen -->
-    <div id="welcomeScreen">
-      <h2>Welcome to Ruiru SDA Welfare System</h2>
-      <p><b>Here you can:</b>
-        <ul>
-          <li><i>Track your monthly welfare contribution</i></li>
-          <li><i>view your payments history</i></li>
-        </ul>
-      </p>
-      <img src="together.avif"alt="together"/>
-      <div class="button-right">
-        <button class="green" onclick="showMainMenu()">Continue ➡</button>
-      </div>
+<main>
+  <div id="welcomeScreen">
+    <h2>Welcome to Ruiru SDA Welfare System</h2>
+    <ul>
+      <li><i>Track your monthly welfare contribution</i></li>
+      <li><i>View your payment history</i></li>
+    </ul>
+    <img src="together.avif" alt="together"/>
+    <div class="button-right">
+      <button class="green" onclick="showMainMenu()">Continue ➡</button>
     </div>
+  </div>
 
-      
-      
+  <div id="mainMenu" class="hidden">
+    <button onclick="showAdminSection()" class="box-button">System Administrator</button>
+    <button onclick="showMemberSection()" class="box-button">Welfare Member</button>
+  </div>
+
+  <div id="adminLogin" class="section hidden">
+    <h3>Enter Administrator Passcode:</h3>
+    <input type="password" id="adminPasscode">
+    <button onclick="verifyAdmin()" class="green">Enter</button>
+    <p id="adminError" style="color:red"></p>
+    <button onclick="showMainMenu()" class="green">⬅ Back</button>
+  </div>
+
+  <div id="adminPanel" class="section hidden">
+    <h3>Register Member</h3>
+    <label>ID Number:</label>
+    <input type="text" id="regId" placeholder="ID Number">
+    <label>Name:</label>
+    <input type="text" id="regName" placeholder="Name">
+    <label>Phone Number:</label>
+    <input type="text" id="regPhone" placeholder="Phone Number">
+    <button onclick="registerMember()" class="green">Register</button>
+    <button onclick="showMainMenu()" class="green">⬅ Back</button>
+
+    <h3>Update Contributions</h3>
+    <label>ID Number:</label>
+    <input type="text" id="contribId" placeholder="ID Number">
+    <label>Target Amount:</label>
+    <input type="number" id="contribTarget" placeholder="Target Amount">
+    <label>Amount Contributed:</label>
+    <input type="number" id="contribAmount" placeholder="Amount Contributed">
+    <button onclick="updateContribution()" class="green">Update</button>
+
+    <table id="adminTable">
+      <thead>
+        <tr>
+          <th>ID</th><th>Name</th><th>Phone</th><th>Target</th><th>Contributed</th><th>Balance</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="button-group">
+      <button class="download-btn" onclick="downloadCSV()">📥 Download CSV</button>
     </div>
+  </div>
 
-    <!-- Main Menu -->
-    <div id="mainMenu" class="hidden">
-      <button onclick="showAdminSection()" class="box-button">System Administrator</button>
-      <button onclick="showMemberSection()" class="box-button">Welfare Member</button>
-    </div>
+  <div id="memberPanel" class="section hidden">
+    <h3>Enter Your Welfare ID Number</h3>
+    <input type="text" id="memberSearchId" placeholder="Enter Your ID Number">
+    <button onclick="searchMember()" class="green">View Record</button>
+    <table id="memberTable" class="hidden">
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Phone</th><th>Target</th><th>Contributed</th><th>Balance</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button onclick="showMainMenu()" class="green">⬅ Back</button>
+  </div>
+</main>
 
-    <!-- Admin Login -->
-    <div id="adminLogin" class="section hidden">
-      <h3>Enter Administrator Passcode:</h3>
-      <input type="password" id="adminPasscode">
-      <button onclick="verifyAdmin()" class="green">Enter</button>
-      <p id="adminError" style="color:red"></p>
-    </div>
-<button onclick="index.back()">Go Back</button>
-    <!-- Admin Panel -->
-    <div id="adminPanel" class="section hidden">
-      <h3>Register Member</h3>
-      <label for="regName">Name:</label>
-      <input type="text" id="regName" placeholder="Name">
-      <label for="regPhone">Phone Number:</label>
-      <input type="text" id="regPhone" placeholder="Phone Number">
-      <button onclick="registerMember()" class="green">Register</button>
-<button onclick="index.back()">Go Back</button>
-      <h3>Update Contributions</h3>
-      <label for="contribName">Name:</label>
-      <input type="text" id="contribName" placeholder="Name">
-      <label for="contribPhone">Phone Number:</label>
-      <input type="text" id="contribPhone" placeholder="Phone Number">
-      <label for="contribTarget">Target Amount:</label>
-      <input type="number" id="contribTarget" placeholder="Target Amount">
-      <label for="contribAmount">Amount Contributed:</label>
-      <input type="number" id="contribAmount" placeholder="Amount Contributed">
-      <button onclick="updateContribution()" class="green">Update</button>
+<script>
+let members = {};
 
-      <table id="adminTable">
-        <thead>
-          <tr>
-            <th>Name</th><th>Phone</th><th>Target</th><th>Contributed</th><th>Balance</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <div class="button-group">
-        <button class="download-btn" onclick="downloadCSV()">📥 Download CSV</button>
-      </div>
-    </div>
-
-    <!-- Member Panel -->
-    <div id="memberPanel" class="section hidden">
-      <h3>Enter Your Welfare Name</h3>
-      <input type="text" id="memberSearchName">
-      <button onclick="searchMember()" class="green">View Record</button>
-      <table id="memberTable" class="hidden">
-        <thead>
-          <tr><th>Name</th><th>Phone</th><th>Target</th><th>Contributed</th><th>Balance</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </main>
-
-  <<script>
-  let members = {};
-
-  // Load data from localStorage when page loads
-  window.onload = () => {
-    const savedData = localStorage.getItem('welfareMembers');
-    if (savedData) {
-      members = JSON.parse(savedData);
-      displayAdminTable(); // If admin logs in later, data will be ready
-    }
-  };
-
-  function saveToLocalStorage() {
-    localStorage.setItem('welfareMembers', JSON.stringify(members));
+window.onload = () => {
+  const savedData = localStorage.getItem('welfareMembers');
+  if (savedData) {
+    members = JSON.parse(savedData);
+    displayAdminTable();
   }
+};
 
-  function showMainMenu() {
-    document.getElementById('welcomeScreen').classList.add('hidden');
-    document.getElementById('mainMenu').classList.remove('hidden');
-  }
+function saveToLocalStorage() {
+  localStorage.setItem('welfareMembers', JSON.stringify(members));
+}
 
-  function showAdminSection() {
-    document.getElementById('mainMenu').classList.add('hidden');
-    document.getElementById('adminLogin').classList.remove('hidden');
-  }
+function showMainMenu() {
+  document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
+  document.getElementById('mainMenu').classList.remove('hidden');
+}
 
-  function showMemberSection() {
-    document.getElementById('mainMenu').classList.add('hidden');
-    document.getElementById('memberPanel').classList.remove('hidden');
-  }
+function showAdminSection() {
+  document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
+  document.getElementById('adminLogin').classList.remove('hidden');
+}
 
-  function verifyAdmin() {
-    const passcode = document.getElementById('adminPasscode').value;
-    if (passcode === '9898') {
-      document.getElementById('adminLogin').classList.add('hidden');
-      document.getElementById('adminPanel').classList.remove('hidden');
-      document.getElementById('adminError').textContent = "";
-      displayAdminTable();
-    } else {
-      document.getElementById('adminError').textContent = "Incorrect passcode.";
-    }
-  }
+function showMemberSection() {
+  document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
+  document.getElementById('memberPanel').classList.remove('hidden');
+}
 
-  function registerMember() {
-    const name = document.getElementById('regName').value.trim();
-    const phone = document.getElementById('regPhone').value.trim();
-    if (!name || !phone) return alert("Fill in all fields");
-    if (!members[name]) {
-      members[name] = { phone, target: 0, contributed: 0 };
-      alert("Member registered.");
-      saveToLocalStorage();
-      displayAdminTable();
-    } else {
-      alert("Member already exists.");
-    }
+function verifyAdmin() {
+  const passcode = document.getElementById('adminPasscode').value;
+  if (passcode === '9898') {
+    showPanel('adminPanel');
+    displayAdminTable();
+  } else {
+    document.getElementById('adminError').textContent = "Incorrect passcode.";
   }
+}
 
-  function updateContribution() {
-    const name = document.getElementById('contribName').value.trim();
-    const phone = document.getElementById('contribPhone').value.trim();
-    const target = parseFloat(document.getElementById('contribTarget').value);
-    const amount = parseFloat(document.getElementById('contribAmount').value);
-    if (!name || !phone || isNaN(target) || isNaN(amount)) return alert("Fill all fields");
-    if (members[name]) {
-      members[name].phone = phone;
-      members[name].target = target;
-      members[name].contributed = amount;
-      alert("Contribution updated.");
-      saveToLocalStorage();
-      displayAdminTable();
-    } else {
-      alert("Member not found.");
-    }
-  }
+function showPanel(id) {
+  document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
 
-  function displayAdminTable() {
-    const tbody = document.querySelector('#adminTable tbody');
-    tbody.innerHTML = '';
-    for (const name in members) {
-      const { phone, target, contributed } = members[name];
-      const balance = target - contributed;
-      const row = `<tr><td>${name}</td><td>${phone}</td><td>${target}</td><td>${contributed}</td><td>${balance}</td></tr>`;
-      tbody.innerHTML += row;
-    }
+function registerMember() {
+  const id = document.getElementById('regId').value.trim();
+  const name = document.getElementById('regName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  if (!id || !name || !phone) return alert("Fill in all fields");
+  if (!members[id]) {
+    members[id] = { name, phone, target: 0, contributed: 0 };
+    alert("Member registered.");
+    saveToLocalStorage();
+    displayAdminTable();
+  } else {
+    alert("Member already exists.");
   }
+}
 
-  function searchMember() {
-    const name = document.getElementById('memberSearchName').value.trim();
-    const data = members[name];
-    const tbody = document.querySelector('#memberTable tbody');
-    if (data) {
-      document.getElementById('memberTable').classList.remove('hidden');
-      tbody.innerHTML = `<tr><td>${name}</td><td>${data.phone}</td><td>${data.target}</td><td>${data.contributed}</td><td>${data.target - data.contributed}</td></tr>`;
-    } else {
-      alert("Member not found.");
-      document.getElementById('memberTable').classList.add('hidden');
-    }
+function updateContribution() {
+  const id = document.getElementById('contribId').value.trim();
+  const target = parseFloat(document.getElementById('contribTarget').value);
+  const amount = parseFloat(document.getElementById('contribAmount').value);
+  if (!id || isNaN(target) || isNaN(amount)) return alert("Fill all fields");
+  if (members[id]) {
+    members[id].target = target;
+    members[id].contributed = amount;
+    alert("Contribution updated.");
+    saveToLocalStorage();
+    displayAdminTable();
+  } else {
+    alert("Member not found.");
   }
+}
 
-  function downloadCSV() {
-    let csv = "Name,Phone,Target,Contributed,Balance\n";
-    for (const name in members) {
-      const { phone, target, contributed } = members[name];
-      const balance = target - contributed;
-      csv += `${name},${phone},${target},${contributed},${balance}\n`;
-    }
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'welfare_contributions.csv';
-    link.click();
+function deleteMember(id) {
+  if (confirm("Are you sure you want to delete this member?")) {
+    delete members[id];
+    saveToLocalStorage();
+    displayAdminTable();
   }
+}
+
+function displayAdminTable() {
+  const tbody = document.querySelector('#adminTable tbody');
+  tbody.innerHTML = '';
+  for (const id in members) {
+    const m = members[id];
+    const balance = m.target - m.contributed;
+    tbody.innerHTML += `<tr><td>${id}</td><td>${m.name}</td><td>${m.phone}</td><td>${m.target}</td><td>${m.contributed}</td><td>${balance}</td><td><button onclick="deleteMember('${id}')">Delete</button></td></tr>`;
+  }
+}
+
+function searchMember() {
+  const id = document.getElementById('memberSearchId').value.trim();
+  const m = members[id];
+  const tbody = document.querySelector('#memberTable tbody');
+  if (m) {
+    document.getElementById('memberTable').classList.remove('hidden');
+    const balance = m.target - m.contributed;
+    tbody.innerHTML = `<tr><td>${id}</td><td>${m.name}</td><td>${m.phone}</td><td>${m.target}</td><td>${m.contributed}</td><td>${balance}</td></tr>`;
+  } else {
+    alert("Member not found.");
+    document.getElementById('memberTable').classList.add('hidden');
+  }
+}
+
+function downloadCSV() {
+  let csv = "ID,Name,Phone,Target,Contributed,Balance\n";
+  for (const id in members) {
+    const m = members[id];
+    const balance = m.target - m.contributed;
+    csv += `${id},${m.name},${m.phone},${m.target},${m.contributed},${balance}\n`;
+  }
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'welfare_contributions.csv';
+  link.click();
+}
 </script>
 
 </body>
 </html>
+
