@@ -306,7 +306,7 @@ function displayAdminTable() {
   for (const id in members) {
     const m = members[id];
     const balance = m.target - m.contributed;
-    tbody.innerHTML += <tr><td>${id}</td><td>${m.name}</td><td>${m.phone}</td><td>${m.target}</td><td>${m.contributed}</td><td>${balance}</td><td><button onclick="deleteMember('${id}')">Delete</button></td></tr>;
+    tbody.innerHTML += `<tr><td>${id}</td><td>${m.name}</td><td>${m.phone}</td><td>${m.target}</td><td>${m.contributed}</td><td>${balance}</td><td><button onclick="deleteMember('${id}')">Delete</button></td></tr>`;
   }
 }
 
@@ -317,7 +317,7 @@ function searchMember() {
   if (m) {
     document.getElementById('memberTable').classList.remove('hidden');
     const balance = m.target - m.contributed;
-    tbody.innerHTML = <tr><td>${id}</td><td>${m.name}</td><td>${m.phone}</td><td>${m.target}</td><td>${m.contributed}</td><td>${balance}</td></tr>;
+    tbody.innerHTML = `<tr><td>${id}</td><td>${m.name}</td><td>${m.phone}</td><td>${m.target}</td><td>${m.contributed}</td><td>${balance}</td></tr>`;
   } else {
     alert("Member not found.");
     document.getElementById('memberTable').classList.add('hidden');
@@ -329,7 +329,7 @@ function downloadCSV() {
   for (const id in members) {
     const m = members[id];
     const balance = m.target - m.contributed;
-    csv += ${id},${m.name},${m.phone},${m.target},${m.contributed},${balance}\n;
+    csv += `${id},${m.name},${m.phone},${m.target},${m.contributed},${balance}\n`;
   }
   const blob = new Blob([csv], { type: 'text/csv' });
   const link = document.createElement('a');
