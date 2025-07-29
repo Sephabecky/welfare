@@ -20,7 +20,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
+      background-color: white;
       color: #333;
       min-height: 100vh;
       display: flex;
@@ -379,7 +379,6 @@
 <header>
   <div class="left">
     <a href="#" onclick="goHome()">
-
       <img src="com.png" alt="SDA Logo" />
     </a>
     <h1>RUIRU SEVENTH DAY ADVENTIST CHURCH</h1>
@@ -388,7 +387,6 @@
     <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="contact.html">Contact</a></li>
-    
   </nav>
 </header>
 
@@ -399,6 +397,7 @@
     <div class="overlay">
       <button class="continue-btn" onclick="showSelectionPage()">Continue</button>
     </div>
+    <img src="church.jpeg" alt="church Image" />
   </div>
 
   <!-- Selection Page -->
@@ -507,6 +506,8 @@
 </main>
 
 <script>
+// Google Sheets configuration - REPLACE WITH YOUR ACTUAL SCRIPT URL
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwlkNgqcQ04Zv2AZQeZPFv2HwdMF4Q11IlMNjI9pjVFuzLK7YvvENtXgav7efwF1P38OQ/exec';
 let members = {};
 const currentYear = new Date().getFullYear();
 
@@ -516,19 +517,26 @@ window.onload = () => {
   initializeYearDropdown();
 };
 
-function loadMembers() {
-  const saved = localStorage.getItem('welfareMembers');
-  if (saved) {
-    try {
-      members = JSON.parse(saved);
+// Load members from Google Sheets
+async function loadMembers() {
+  try {
+    showLoading(true);
+    const response = await fetch(`${scriptURL}?action=getMembers`);
+    if (response.ok) {
+      members = await response.json();
       // Initialize any missing fields for existing members
       for (const id in members) {
         initMemberData(members[id]);
       }
-    } catch (e) {
-      console.error("Error loading saved data:", e);
-      members = {};
+    } else {
+      console.error("Error loading data from server");
+      alert("Error loading data. Please try again.");
     }
+  } catch (error) {
+    console.error("Network error:", error);
+    alert("Network error. Please check your connection.");
+  } finally {
+    showLoading(false);
   }
 }
 
@@ -549,6 +557,55 @@ function initializeYearDropdown() {
     option.textContent = year;
     if (year === currentYear) option.selected = true;
     yearSelect.appendChild(option);
+  }
+}
+
+// Save data to Google Sheets
+async function saveData() {
+  try {
+    showLoading(true);
+    const response = await fetch(scriptURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: 'saveMembers',
+        members: members
+      })
+    });
+    
+    if (!response.ok) {
+      console.error("Error saving data to server");
+      alert("Error saving data. Please try again.");
+    }
+  } catch (error) {
+    console.error("Network error:", error);
+    alert("Network error. Please check your connection.");
+  } finally {
+    showLoading(false);
+  }
+}
+
+function showLoading(show) {
+  const loader = document.getElementById('loadingIndicator');
+  if (!loader && show) {
+    const loaderDiv = document.createElement('div');
+    loaderDiv.id = 'loadingIndicator';
+    loaderDiv.style.position = 'fixed';
+    loaderDiv.style.top = '0';
+    loaderDiv.style.left = '0';
+    loaderDiv.style.width = '100%';
+    loaderDiv.style.height = '100%';
+    loaderDiv.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    loaderDiv.style.display = 'flex';
+    loaderDiv.style.justifyContent = 'center';
+    loaderDiv.style.alignItems = 'center';
+    loaderDiv.style.zIndex = '2000';
+    loaderDiv.innerHTML = '<div style="color:white; font-size:24px;">Loading...</div>';
+    document.body.appendChild(loaderDiv);
+  } else if (loader && !show) {
+    document.body.removeChild(loader);
   }
 }
 
@@ -611,7 +668,7 @@ function backToSelection() {
   animateSectionTransition(currentSection, selectionPage);
 }
 
-function registerMember() {
+async function registerMember() {
   const id = document.getElementById('regId').value.trim();
   const name = document.getElementById('regName').value.trim();
   const phone = document.getElementById('regPhone').value.trim();
@@ -622,8 +679,8 @@ function registerMember() {
   
   if (!members[id]) {
     members[id] = createNewMember(name, phone, status, monthlyTarget);
+    await saveData();
     alert("Member registered successfully.");
-    saveData();
     displayAdminTable();
     clearRegistrationForm();
   } else {
@@ -663,7 +720,7 @@ function createNewMember(name, phone, status, monthlyTarget) {
   };
 }
 
-function updateContribution() {
+async function updateContribution() {
   const id = document.getElementById('contribId').value.trim();
   const month = document.getElementById('contribMonth').value;
   const year = document.getElementById('contribYear').value;
@@ -690,8 +747,8 @@ function updateContribution() {
   // Update arrears if payment covers monthly target
   updateArrearsOnPayment(member, amount);
   
+  await saveData();
   alert("Contribution recorded successfully.");
-  saveData();
   displayAdminTable();
   clearContributionForm();
 }
@@ -718,15 +775,15 @@ function updateArrearsOnPayment(member, amount) {
   }
 }
 
-function updateArrears() {
+async function updateArrears() {
   const id = document.getElementById('arrearsId').value.trim();
   const monthsUnpaid = parseInt(document.getElementById('arrearsMonths').value);
   
   if (!validateArrearsUpdate(id, monthsUnpaid)) return;
   
   members[id].monthsUnpaid = monthsUnpaid;
+  await saveData();
   alert("Arrears updated successfully.");
-  saveData();
   displayAdminTable();
   clearArrearsForm();
 }
@@ -798,6 +855,14 @@ function escapeHtml(text) {
     .replace(/'/g, "&#039;");
 }
 
+async function deleteMember(id) {
+  if (confirm(`Are you sure you want to delete member ${id}?`)) {
+    delete members[id];
+    await saveData();
+    displayAdminTable();
+  }
+}
+
 function searchMember() {
   const id = document.getElementById('memberSearchId').value.trim();
   const m = members[id];
@@ -849,85 +914,34 @@ function searchMember() {
   }
 }
 
-function deleteMember(id) {
-  if (confirm(`Are you sure you want to delete member ${id}?`)) {
-    delete members[id];
-    saveData();
-    displayAdminTable();
-  }
-}
-
-function saveData() {
+async function downloadCSV() {
   try {
-    localStorage.setItem('welfareMembers', JSON.stringify(members));
-  } catch (e) {
-    console.error("Error saving data:", e);
-    alert("Error saving data. Please try again.");
-  }
-}
-
-function downloadCSV() {
-  try {
-    // Prepare CSV header
-    let csv = "ID,Name,Phone,Status,Monthly Target,Months Paid,Months Unpaid,Total Arrears,Payment History\n";
-    
-    // Sort members by ID
-    const sortedIds = Object.keys(members).sort();
-    
-    // Add each member's data to CSV
-    for (const id of sortedIds) {
-      const m = members[id];
-      const monthsPaid = calculateMonthsPaid(m);
-      const monthsUnpaid = m.monthsUnpaid || 0;
-      const totalArrears = monthsUnpaid * m.monthlyTarget;
+    showLoading(true);
+    const response = await fetch(`${scriptURL}?action=downloadCSV`);
+    if (response.ok) {
+      const blob = await response.blob();
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
       
-      // Format payment history
-      let paymentHistory = formatPaymentHistory(m.paymentHistory);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `welfare_contributions_${new Date().toISOString().slice(0,10)}.csv`);
       
-      // Escape fields for CSV
-      const escapedName = `"${(m.name || '').replace(/"/g, '""')}"`;
-      const escapedPhone = `"${(m.phone || '').replace(/"/g, '""')}"`;
-      const escapedHistory = `"${paymentHistory.replace(/"/g, '""')}"`;
+      document.body.appendChild(link);
+      link.click();
       
-      // Add member's data to CSV
-      csv += `${id},${escapedName},${escapedPhone},${m.status || 'active'},${(m.monthlyTarget || 0).toFixed(2)},${monthsPaid},${monthsUnpaid},${totalArrears.toFixed(2)},${escapedHistory}\n`;
+      setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }, 100);
+    } else {
+      alert("Error generating CSV file. Please try again.");
     }
-    
-    // Create download link
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    
-    link.setAttribute('href', url);
-    link.setAttribute('download', `welfare_contributions_${new Date().toISOString().slice(0,10)}.csv`);
-    
-    // Trigger download
-    document.body.appendChild(link);
-    link.click();
-    
-    // Clean up
-    setTimeout(() => {
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }, 100);
-    
   } catch (error) {
-    console.error("Error generating CSV:", error);
-    alert("Error generating CSV file. Please try again.");
+    console.error("Error downloading CSV:", error);
+    alert("Error downloading CSV file. Please try again.");
+  } finally {
+    showLoading(false);
   }
-}
-
-function formatPaymentHistory(paymentHistory) {
-  if (!paymentHistory || paymentHistory.length === 0) return "No payments";
-  
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  return paymentHistory
-    .map(payment => {
-      const monthName = monthNames[payment.month - 1] || payment.month;
-      return `${monthName} ${payment.year}: KSh${payment.amount.toFixed(2)}`;
-    })
-    .join('; ');
 }
 
 function clearRegistrationForm() {
@@ -951,6 +965,101 @@ function goHome() {
   const currentSection = document.querySelector('main > div:not(.hidden)');
   const welcomePage = document.getElementById('welcomePage');
   animateSectionTransition(currentSection, welcomePage);
+}
+function doGet(e) {
+  const action = e.parameter.action;
+  const ss = SpreadsheetApp.openById('YOUR_SPREADSHEET_ID');
+  const sheet = ss.getSheetByName('Members') || ss.insertSheet('Members');
+  
+  if (action === 'getMembers') {
+    return getMembers(sheet);
+  } else if (action === 'downloadCSV') {
+    return downloadCSV(sheet);
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({error: 'Invalid action'})).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  const data = JSON.parse(e.postData.contents);
+  const ss = SpreadsheetApp.openById('YOUR_SPREADSHEET_ID');
+  const sheet = ss.getSheetByName('Members') || ss.insertSheet('Members');
+  
+  if (data.action === 'saveMembers') {
+    return saveMembers(sheet, data.members);
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({error: 'Invalid action'})).setMimeType(ContentService.MimeType.JSON);
+}
+
+function getMembers(sheet) {
+  const data = sheet.getDataRange().getValues();
+  const members = {};
+  
+  // Skip header row
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    if (row[0]) { // ID exists
+      members[row[0]] = {
+        name: row[1],
+        phone: row[2],
+        status: row[3],
+        monthlyTarget: row[4],
+        monthsUnpaid: row[5],
+        contributions: JSON.parse(row[6] || '{}'),
+        paymentHistory: JSON.parse(row[7] || '[]')
+      };
+    }
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify(members)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function saveMembers(sheet, members) {
+  // Clear existing data
+  sheet.clear();
+  
+  // Create headers
+  sheet.appendRow([
+    'ID', 'Name', 'Phone', 'Status', 'Monthly Target', 
+    'Months Unpaid', 'Contributions', 'Payment History'
+  ]);
+  
+  // Add member data
+  for (const id in members) {
+    const m = members[id];
+    sheet.appendRow([
+      id,
+      m.name,
+      m.phone,
+      m.status,
+      m.monthlyTarget,
+      m.monthsUnpaid,
+      JSON.stringify(m.contributions),
+      JSON.stringify(m.paymentHistory)
+    ]);
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+}
+
+function downloadCSV(sheet) {
+  const data = sheet.getDataRange().getValues();
+  let csv = '';
+  
+  data.forEach(row => {
+    csv += row.map(field => {
+      // Escape fields that contain commas or quotes
+      if (typeof field === 'string' && (field.includes(',') || field.includes('"'))) {
+        return `"${field.replace(/"/g, '""')}"`;
+      }
+      return field;
+    }).join(',') + '\n';
+  });
+  
+  return ContentService.createTextOutput(csv)
+    .setMimeType(ContentService.MimeType.CSV)
+    .downloadAsFile('welfare_contributions.csv');
 }
 </script>
 
