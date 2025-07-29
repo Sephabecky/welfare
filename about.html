@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - Ruiru SDA Welfare System</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #047857;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Make table header green with white text */
+    table thead {
+      background-color: #047857;
+      color: white;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      padding: 10px 5%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+
+    header .left {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+    }
+
+    header img {
+      height: 50px;
+      margin-right: 15px;
+      max-width: 100%;
+    }
+
+    header h1 {
+      font-size: clamp(14px, 3vw, 18px);
+      margin: 0;
+    }
+
+    header nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    header nav a {
+      margin: 5px 10px;
+      text-decoration: none;
+      color: #047857;
+      font-weight: bold;
+      font-size: clamp(12px, 2.5vw, 16px);
+    }
+
+    /* About Page Styling */
+    .about-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      flex: 1;
+    }
+
+    .about-box {
+      background-color: #065f46;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      margin: 30px 0;
+    }
+
+    .about-box h2 {
+      color: #a7f3d0;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .about-box h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: #a7f3d0;
+    }
+
+    .about-box p {
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .payment-method {
+      background-color: #05452e;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .payment-method h4 {
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      background-color: white;
+      color: #047857;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back-btn:hover {
+      background-color: #e6e6e6;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      background-color: #05452e;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: auto;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      header .left {
+        margin-bottom: 10px;
+      }
+      
+      .about-box {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+  <div class="left">
+    <a href="#" onclick="goHome()">
+
+      <img src="com.png" alt="SDA Logo" />
+    </a>
+    <h1>RUIRU SEVENTH DAY ADVENTIST CHURCH</h1>
+  </div>
+  <nav>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    
+  </nav>
+</header>
+
+  <main>
+    <div class="about-container">
+      <div class="about-box">
+        <h2>About Ruiru SDA Welfare System</h2>
+        
+        <h3>Our Location</h3>
+        <p>Ruiru SDA is located in Wataalam, Ruiru Town, Kiambu County, Kenya. We are situated along the Nairobi-Thika Highway, serving both the local community and visitors.</p>
+        
+        <h3>Our Vision</h3>
+        <p>To create a self-sustaining welfare system that empowers members to support one another in times of need, fostering a strong, caring Christian community.</p>
+        
+        <h3>Our Welfare System</h3>
+        <p>This welfare management system was developed to:</p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+          <li>Track member contributions transparently</li>
+          <li>Manage welfare funds efficiently</li>
+          <li>Provide easy access to contribution records</li>
+          <li>Support members during emergencies</li>
+        </ul>
+        
+        <h3>Payment Methods</h3>
+        <div class="payment-method">
+          <h4>Lipa na M-Pesa</h4>
+          <p>1. Go to M-Pesa menu</p>
+          <p>2. Select Lipa na M-Pesa</p>
+          <p>3. Enter Paybill: <strong>7131645</strong></p>
+          <p>4. Account: <strong>PURPOSE</strong> (e.g., WELFARE, HARVEST etc)</p>
+          <p>5. Enter Amount</p>
+          <p>6. Enter your PIN and send</p>
+        </div>
+        
+        <a href="index.html" class="back-btn">⬅ Back to Home</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Ruiru SDA Welfare &copy; 2025
+  </footer>
+</body>
+</html>

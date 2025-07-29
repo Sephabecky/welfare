@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us - Ruiru SDA Welfare System</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #047857;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Make table header green with white text */
+    table thead {
+      background-color: #047857;
+      color: white;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      padding: 10px 5%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+
+    header .left {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+    }
+
+    header img {
+      height: 50px;
+      margin-right: 15px;
+      max-width: 100%;
+    }
+
+    header h1 {
+      font-size: clamp(14px, 3vw, 18px);
+      margin: 0;
+    }
+
+    header nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    header nav a {
+      margin: 5px 10px;
+      text-decoration: none;
+      color: #047857;
+      font-weight: bold;
+      font-size: clamp(12px, 2.5vw, 16px);
+    }
+
+    /* Contact Page Styling */
+    .contact-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      flex: 1;
+    }
+
+    .contact-box {
+      background-color: #065f46;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      margin: 30px 0;
+    }
+
+    .contact-box h2 {
+      color: #a7f3d0;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .contact-info {
+      margin-bottom: 25px;
+    }
+
+    .contact-info h3 {
+      color: #a7f3d0;
+      margin-bottom: 15px;
+    }
+
+    .contact-info p {
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .contact-method {
+      background-color: #05452e;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .contact-method h4 {
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      background-color: white;
+      color: #047857;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back-btn:hover {
+      background-color: #e6e6e6;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      background-color: #05452e;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: auto;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      header .left {
+        margin-bottom: 10px;
+      }
+      
+      .contact-box {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+  <div class="left">
+    <a href="#" onclick="goHome()">
+
+      <img src="com.png" alt="SDA Logo" />
+    </a>
+    <h1>RUIRU SEVENTH DAY ADVENTIST CHURCH</h1>
+  </div>
+  <nav>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    
+  </nav>
+</header>
+  <main>
+    <div class="contact-container">
+      <div class="contact-box">
+        <h2>Contact Ruiru SDA Church</h2>
+        
+    
+        
+        
+        <div class="contact-method">
+          <h4>Phone Contacts</h4>
+          <p>Church Office: <strong>+254 7XX XXX XXX</strong></p>
+          <p>Pastor: <strong>+254 7XX XXX XXX</strong></p>
+          <p>Welfare Coordinator: <strong>+254 7XX XXX XXX</strong></p>
+        </div>
+        
+        <div class="contact-method">
+          <h4>Email Address</h4>
+          <p>General Inquiries: <strong>info@ruirusda.org</strong></p>
+          <p>Welfare Matters: <strong>welfare@ruirusda.org</strong></p>
+        </div>
+        
+        <div class="contact-method">
+          <h4>Social Media</h4>
+          <p>Facebook: <strong>@RuiruSDAChurch</strong></p>
+          <p>Twitter: <strong>@RuiruSDA</strong></p>
+          <p>YouTube: <strong>Ruiru SDA Channel</strong></p>
+        </div>
+        
+        <a href="index.html" class="back-btn">⬅ Back to Home</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Ruiru SDA Welfare &copy; 2025
+  </footer>
+</body>
+</html>
