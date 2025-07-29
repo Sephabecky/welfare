@@ -2,340 +2,955 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ruiru SDA Welfare System</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background-color: #f0fdf4;
+    }
+    
+    /* Make table header green with white text */
+    table thead {
+      background-color: #047857;
+      color: white;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
+    }
+
+    .hidden {
+      display: none !important;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
     }
 
     header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      padding: 10px 5%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       width: 100%;
-      background-color: #047857;
-      color: white;
-      padding: 1rem;
+    }
+
+    header .left {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
     }
 
     header img {
       height: 50px;
+      margin-right: 15px;
+      max-width: 100%;
     }
 
-    main {
-      width: 100%;
-      max-width: 900px;
-      padding: 2rem;
+    header h1 {
+      font-size: clamp(14px, 3vw, 18px);
+      margin: 0;
     }
 
-    img {
-      max-width:100%;
-      height:auto;
-    } 
-
-    h1, h2, h3 {
-      text-align: center;
-    }
-
-    .button-group {
-      text-align: center;
-      margin-top: 1.5rem;
-    }
-
-    .button-right {
+    header nav {
       display: flex;
-      justify-content: flex-end;
-      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
     }
 
-    button {
-      padding: 1rem 2rem;
-      margin: 0.5rem;
+    header nav a {
+      margin: 5px 10px;
+      text-decoration: none;
+      color: #047857;
+      font-weight: bold;
+      font-size: clamp(12px, 2.5vw, 16px);
+    }
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px; /* Ensure minimum height */
+  overflow: hidden;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.hero .overlay {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  background-color: transparent;
+  padding: 0;
+  transform: none;
+  text-align: center;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.hero .continue-btn {
+  padding: 15px 35px;
+  background-color: #047857;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 100vh;
+    height: auto;
+  }
+  
+  .hero .overlay {
+    bottom: 20px;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .hero .continue-btn {
+    padding: 12px 25px;
+    font-size: 16px;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero .overlay {
+    bottom: 15%;
+  }
+  
+  .hero .continue-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Selection Page Styling */
+    .selection-page {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 30px 5%;
+      min-height: 70vh;
+      align-items: center;
+    }
+
+    .selection-right {
+      width: 45%;
+      padding: 30px;
+      background-color: #047857;
+      color: white;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .selection-right h2 {
+      margin-bottom: 20px;
+    }
+
+    .selection-right button {
+      width: 100%;
+      max-width: 300px;
+      margin-top: 15px;
+      padding: 12px;
       border: none;
       border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
-    }
-
-    .green {
-      background-color: #047857;
-      color: white;
-      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .box-button {
-      background-color: #047857;
-      color: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-      width: 250px;
-      font-size: 18px;
-      margin: 1rem auto;
-      display: block;
-    }
-
-    .download-btn {
-      background-color: #065f46;
-      color: white;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    input {
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      width: 100%;
-    }
-
-    label {
-      display: block;
-      margin-top: 1rem;
+      background-color: white;
+      color: #047857;
       font-weight: bold;
+      transition: all 0.3s ease;
     }
 
-     
-    table {
+    .selection-right button:hover {
+      background-color: #e6e6e6;
+      transform: translateY(-2px);
+    }
+
+    .selection-left {
+      width: 45%;
+      height: 400px;
+      background-color: #ccc;
+      border-radius: 15px;
+      background-image: url("phone.jpeg");
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form Styling */
+    .section {
+      padding: 20px 5%;
+      transition: all 0.5s ease;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    input, select {
+      display: block;
+      margin-bottom: 10px;
+      padding: 8px;
       width: 100%;
-      margin-top: 1rem;
+      max-width: 300px;
+    }
+
+    button.green {
+      background-color: #047857;
+      color: white;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 6px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button.green:hover {
+      background-color: #065f46;
+      transform: translateY(-2px);
+    }
+
+    /* Table Styling */
+    table {
+      margin-top: 20px;
+      width: 100%;
       border-collapse: collapse;
+      overflow-x: auto;
+      display: block;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
     }
 
     th, td {
-      border: 1px solid #ccc;
-      padding: 0.5rem;
+      padding: 8px;
       text-align: center;
     }
 
-    th {
-      background-color: #047857;
+    .download-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #065f46;
       color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
-    .section {
-      text-align: left;
+    .download-btn:hover {
+      background-color: #033d2f;
+      transform: translateY(-2px);
+    }
+    
+    /* Status Indicators */
+    .status-active {
+      color: green;
+      font-weight: bold;
+    }
+    
+    .status-inactive {
+      color: red;
+      font-weight: bold;
+    }
+    
+    /* Month Selector */
+    .month-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .month-selector select {
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    .arrears-input {
+      background-color: #fff3cd;
+    }
+
+    /* Animations */
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .fade-out {
+      animation: fadeOut 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      header .left {
+        margin-bottom: 10px;
+      }
+      
+      .hero .overlay {
+        bottom: 20px;
+        right: 20px;
+      }
+      
+      .hero .continue-btn {
+        padding: 12px 25px;
+        font-size: 16px;
+      }
+      
+      .selection-page {
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+      }
+      
+      .selection-right, .selection-left {
+        width: 100%;
+      }
+      
+      .selection-left {
+        height: 300px;
+      }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <img src="com.png" alt="SDA Logo" />
-  <h1>Ruiru SDA Welfare System</h1>
+  <div class="left">
+    <a href="#" onclick="goHome()">
+
+      <img src="com.png" alt="SDA Logo" />
+    </a>
+    <h1>RUIRU SEVENTH DAY ADVENTIST CHURCH</h1>
+  </div>
+  <nav>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    
+  </nav>
 </header>
 
 <main>
-  <div id="welcomeScreen">
-    <h2>Welcome to Ruiru SDA Welfare System</h2>
-    <ul>
-      <li><i>Track your monthly welfare contribution</i></li>
-      <li><i>View your payment history</i></li>
-    </ul>
-    <img src="together.avif" alt="together"/>
-    <div class="button-right">
-      <button class="green" onclick="showMainMenu()">Continue ➡</button>
+  <!-- Welcome Page with Full-screen Image -->
+  <div class="hero" id="welcomePage">
+    <img src="welcome.jpg" alt="Welcome Image" />
+    <div class="overlay">
+      <button class="continue-btn" onclick="showSelectionPage()">Continue</button>
     </div>
   </div>
 
-  <div id="mainMenu" class="hidden">
-    <button onclick="showAdminSection()" class="box-button">System Administrator</button>
-    <button onclick="showMemberSection()" class="box-button">Welfare Member</button>
+  <!-- Selection Page -->
+  <div class="selection-page hidden" id="selectionPage">
+    <div class="selection-left"></div>
+    <div class="selection-right">
+      <h2>Welcome<br/>Choose one</h2>
+      <button onclick="showAdminSection()">Admin</button>
+      <button onclick="showMemberSection()">Welfare Member</button>
+    </div>
   </div>
 
+  <!-- Admin Login -->
   <div id="adminLogin" class="section hidden">
     <h3>Enter Administrator Passcode:</h3>
     <input type="password" id="adminPasscode">
     <button onclick="verifyAdmin()" class="green">Enter</button>
     <p id="adminError" style="color:red"></p>
-    <button onclick="showMainMenu()" class="green">⬅ Back</button>
+    <button onclick="backToSelection()" class="green">⬅ Back</button>
   </div>
 
+  <!-- Admin Panel -->
   <div id="adminPanel" class="section hidden">
     <h3>Register Member</h3>
-    <label>ID Number:</label>
     <input type="text" id="regId" placeholder="ID Number">
-    <label>Name:</label>
     <input type="text" id="regName" placeholder="Name">
-    <label>Phone Number:</label>
     <input type="text" id="regPhone" placeholder="Phone Number">
+    <select id="regStatus">
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+    </select>
+    <input type="number" id="regMonthlyTarget" placeholder="Monthly Contribution Amount">
     <button onclick="registerMember()" class="green">Register</button>
-    <button onclick="showMainMenu()" class="green">⬅ Back</button>
+    <button onclick="backToSelection()" class="green">⬅ Back</button>
 
-    <h3>Update Contributions</h3>
-    <label>ID Number:</label>
+    <h3>Record Monthly Contribution</h3>
+    <div class="month-selector">
+      <select id="contribMonth">
+        <option value="1">January</option>
+        <option value="2">February</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+        <option value="5">May</option>
+        <option value="6">June</option>
+        <option value="7">July</option>
+        <option value="8">August</option>
+        <option value="9">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+      </select>
+      <select id="contribYear">
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+      </select>
+    </div>
     <input type="text" id="contribId" placeholder="ID Number">
-    <label>Target Amount:</label>
-    <input type="number" id="contribTarget" placeholder="Target Amount">
-    <label>Amount Contributed:</label>
     <input type="number" id="contribAmount" placeholder="Amount Contributed">
-    <button onclick="updateContribution()" class="green">Update</button>
+    <button onclick="updateContribution()" class="green">Record Contribution</button>
 
+    <h3>Update Arrears</h3>
+    <input type="text" id="arrearsId" placeholder="ID Number">
+    <input type="number" id="arrearsMonths" placeholder="Months Not Paid" class="arrears-input">
+    <button onclick="updateArrears()" class="green">Update Arrears</button>
+
+    <h3>Member Records</h3>
     <table id="adminTable">
       <thead>
         <tr>
-          <th>ID</th><th>Name</th><th>Phone</th><th>Target</th><th>Contributed</th><th>Balance</th><th>Action</th>
+          <th>ID</th><th>Name</th><th>Phone</th><th>Status</th><th>Monthly Target</th>
+          <th>Months Paid</th><th>Months Unpaid</th><th>Total Arrears</th><th>Action</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
 
-    <div class="button-group">
-      <button class="download-btn" onclick="downloadCSV()">📥 Download CSV</button>
-    </div>
+    <button class="download-btn" onclick="downloadCSV()">📥 Download CSV</button>
   </div>
 
+  <!-- Member Panel -->
   <div id="memberPanel" class="section hidden">
     <h3>Enter Your Welfare ID Number</h3>
     <input type="text" id="memberSearchId" placeholder="Enter Your ID Number">
     <button onclick="searchMember()" class="green">View Record</button>
     <table id="memberTable" class="hidden">
       <thead>
-        <tr><th>ID</th><th>Name</th><th>Phone</th><th>Target</th><th>Contributed</th><th>Balance</th></tr>
+        <tr>
+          <th>ID</th><th>Name</th><th>Phone</th><th>Status</th><th>Monthly Target</th>
+          <th>Months Paid</th><th>Months Unpaid</th><th>Total Arrears</th>
+        </tr>
       </thead>
       <tbody></tbody>
     </table>
-    <button onclick="showMainMenu()" class="green">⬅ Back</button>
+    <div id="memberDetails" class="hidden">
+      <h4>Payment History</h4>
+      <table id="paymentHistoryTable">
+        <thead>
+          <tr><th>Month</th><th>Year</th><th>Amount Paid</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <button onclick="backToSelection()" class="green">⬅ Back</button>
   </div>
 </main>
 
 <script>
 let members = {};
+const currentYear = new Date().getFullYear();
 
+// Initialize the application
 window.onload = () => {
-  const savedData = localStorage.getItem('welfareMembers');
-  if (savedData) {
-    members = JSON.parse(savedData);
-    displayAdminTable();
-  }
+  loadMembers();
+  initializeYearDropdown();
 };
 
-function saveToLocalStorage() {
-  localStorage.setItem('welfareMembers', JSON.stringify(members));
+function loadMembers() {
+  const saved = localStorage.getItem('welfareMembers');
+  if (saved) {
+    try {
+      members = JSON.parse(saved);
+      // Initialize any missing fields for existing members
+      for (const id in members) {
+        initMemberData(members[id]);
+      }
+    } catch (e) {
+      console.error("Error loading saved data:", e);
+      members = {};
+    }
+  }
 }
 
-function showMainMenu() {
-  document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
-  document.getElementById('mainMenu').classList.remove('hidden');
+function initMemberData(member) {
+  if (!member.monthsUnpaid) member.monthsUnpaid = 0;
+  if (!member.contributions) member.contributions = {};
+  if (!member.paymentHistory) member.paymentHistory = [];
+  if (!member.status) member.status = 'active';
+  if (!member.monthlyTarget) member.monthlyTarget = 0;
+}
+
+function initializeYearDropdown() {
+  const yearSelect = document.getElementById('contribYear');
+  yearSelect.innerHTML = '';
+  for (let year = currentYear - 2; year <= currentYear + 1; year++) {
+    const option = document.createElement('option');
+    option.value = year;
+    option.textContent = year;
+    if (year === currentYear) option.selected = true;
+    yearSelect.appendChild(option);
+  }
+}
+
+function animateSectionTransition(outElement, inElement) {
+  if (outElement) {
+    outElement.classList.add('fade-out');
+    setTimeout(() => {
+      outElement.classList.add('hidden');
+      outElement.classList.remove('fade-out');
+      if (inElement) {
+        inElement.classList.remove('hidden');
+        inElement.classList.add('fade-in');
+        setTimeout(() => {
+          inElement.classList.remove('fade-in');
+        }, 500);
+      }
+    }, 500);
+  } else if (inElement) {
+    inElement.classList.remove('hidden');
+    inElement.classList.add('fade-in');
+    setTimeout(() => {
+      inElement.classList.remove('fade-in');
+    }, 500);
+  }
+}
+
+function showSelectionPage() {
+  const welcomePage = document.getElementById('welcomePage');
+  const selectionPage = document.getElementById('selectionPage');
+  animateSectionTransition(welcomePage, selectionPage);
 }
 
 function showAdminSection() {
-  document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
-  document.getElementById('adminLogin').classList.remove('hidden');
+  const selectionPage = document.getElementById('selectionPage');
+  const adminLogin = document.getElementById('adminLogin');
+  animateSectionTransition(selectionPage, adminLogin);
 }
 
 function showMemberSection() {
-  document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
-  document.getElementById('memberPanel').classList.remove('hidden');
+  const selectionPage = document.getElementById('selectionPage');
+  const memberPanel = document.getElementById('memberPanel');
+  animateSectionTransition(selectionPage, memberPanel);
 }
 
 function verifyAdmin() {
   const passcode = document.getElementById('adminPasscode').value;
   if (passcode === '9898') {
-    showPanel('adminPanel');
+    const adminLogin = document.getElementById('adminLogin');
+    const adminPanel = document.getElementById('adminPanel');
+    animateSectionTransition(adminLogin, adminPanel);
     displayAdminTable();
   } else {
     document.getElementById('adminError').textContent = "Incorrect passcode.";
   }
 }
 
-function showPanel(id) {
-  document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
+function backToSelection() {
+  const currentSection = document.querySelector('main > div:not(.hidden)');
+  const selectionPage = document.getElementById('selectionPage');
+  animateSectionTransition(currentSection, selectionPage);
 }
 
 function registerMember() {
   const id = document.getElementById('regId').value.trim();
   const name = document.getElementById('regName').value.trim();
   const phone = document.getElementById('regPhone').value.trim();
-  if (!id || !name || !phone) return alert("Fill in all fields");
+  const status = document.getElementById('regStatus').value;
+  const monthlyTarget = parseFloat(document.getElementById('regMonthlyTarget').value);
+  
+  if (!validateRegistration(id, name, phone, monthlyTarget)) return;
+  
   if (!members[id]) {
-    members[id] = { name, phone, target: 0, contributed: 0 };
-    alert("Member registered.");
-    saveToLocalStorage();
+    members[id] = createNewMember(name, phone, status, monthlyTarget);
+    alert("Member registered successfully.");
+    saveData();
     displayAdminTable();
+    clearRegistrationForm();
   } else {
     alert("Member already exists.");
   }
 }
 
+function validateRegistration(id, name, phone, monthlyTarget) {
+  if (!id) {
+    alert("Please enter ID number.");
+    return false;
+  }
+  if (!name) {
+    alert("Please enter name.");
+    return false;
+  }
+  if (!phone) {
+    alert("Please enter phone number.");
+    return false;
+  }
+  if (isNaN(monthlyTarget)) {
+    alert("Please enter a valid monthly contribution amount.");
+    return false;
+  }
+  return true;
+}
+
+function createNewMember(name, phone, status, monthlyTarget) {
+  return { 
+    name, 
+    phone, 
+    status,
+    monthlyTarget,
+    monthsUnpaid: 0,
+    contributions: {},
+    paymentHistory: []
+  };
+}
+
 function updateContribution() {
   const id = document.getElementById('contribId').value.trim();
-  const target = parseFloat(document.getElementById('contribTarget').value);
+  const month = document.getElementById('contribMonth').value;
+  const year = document.getElementById('contribYear').value;
   const amount = parseFloat(document.getElementById('contribAmount').value);
-  if (!id || isNaN(target) || isNaN(amount)) return alert("Fill all fields");
-  if (members[id]) {
-    members[id].target = target;
-    members[id].contributed = amount;
-    alert("Contribution updated.");
-    saveToLocalStorage();
-    displayAdminTable();
-  } else {
+  
+  if (!validateContribution(id, amount)) return;
+  
+  const monthYearKey = `${month}-${year}`;
+  const member = members[id];
+  
+  // Record the payment
+  if (!member.contributions[monthYearKey]) {
+    member.contributions[monthYearKey] = 0;
+  }
+  member.contributions[monthYearKey] += amount;
+  
+  // Add to payment history
+  member.paymentHistory.push({
+    month: parseInt(month),
+    year: parseInt(year),
+    amount: amount
+  });
+  
+  // Update arrears if payment covers monthly target
+  updateArrearsOnPayment(member, amount);
+  
+  alert("Contribution recorded successfully.");
+  saveData();
+  displayAdminTable();
+  clearContributionForm();
+}
+
+function validateContribution(id, amount) {
+  if (!id) {
+    alert("Please enter ID number.");
+    return false;
+  }
+  if (isNaN(amount)) {
+    alert("Please enter a valid contribution amount.");
+    return false;
+  }
+  if (!members[id]) {
     alert("Member not found.");
+    return false;
+  }
+  return true;
+}
+
+function updateArrearsOnPayment(member, amount) {
+  if (member.monthsUnpaid > 0 && amount >= member.monthlyTarget) {
+    member.monthsUnpaid = Math.max(0, member.monthsUnpaid - 1);
   }
 }
 
-function deleteMember(id) {
-  if (confirm("Are you sure you want to delete this member?")) {
-    delete members[id];
-    saveToLocalStorage();
-    displayAdminTable();
+function updateArrears() {
+  const id = document.getElementById('arrearsId').value.trim();
+  const monthsUnpaid = parseInt(document.getElementById('arrearsMonths').value);
+  
+  if (!validateArrearsUpdate(id, monthsUnpaid)) return;
+  
+  members[id].monthsUnpaid = monthsUnpaid;
+  alert("Arrears updated successfully.");
+  saveData();
+  displayAdminTable();
+  clearArrearsForm();
+}
+
+function validateArrearsUpdate(id, monthsUnpaid) {
+  if (!id) {
+    alert("Please enter ID number.");
+    return false;
   }
+  if (isNaN(monthsUnpaid) || monthsUnpaid < 0) {
+    alert("Please enter valid months unpaid (0 or positive number).");
+    return false;
+  }
+  if (!members[id]) {
+    alert("Member not found.");
+    return false;
+  }
+  return true;
 }
 
 function displayAdminTable() {
   const tbody = document.querySelector('#adminTable tbody');
   tbody.innerHTML = '';
-  for (const id in members) {
-    const m = members[id];
-    const balance = m.target - m.contributed;
-    tbody.innerHTML += `<tr><td>${id}</td><td>${m.name}</td><td>${m.phone}</td><td>${m.target}</td><td>${m.contributed}</td><td>${balance}</td><td><button onclick="deleteMember('${id}')">Delete</button></td></tr>`;
+  
+  if (Object.keys(members).length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center">No members registered yet</td></tr>';
+    return;
   }
+  
+  // Sort members by ID before displaying
+  const sortedIds = Object.keys(members).sort();
+  
+  for (const id of sortedIds) {
+    const m = members[id];
+    const monthsPaid = calculateMonthsPaid(m);
+    const monthsUnpaid = m.monthsUnpaid || 0;
+    const totalArrears = monthsUnpaid * m.monthlyTarget;
+    
+    tbody.innerHTML += createMemberRow(id, m, monthsPaid, monthsUnpaid, totalArrears);
+  }
+}
+
+function calculateMonthsPaid(member) {
+  return Object.keys(member.contributions).length;
+}
+
+function createMemberRow(id, member, monthsPaid, monthsUnpaid, totalArrears) {
+  const statusClass = member.status === 'active' ? 'status-active' : 'status-inactive';
+  return `
+    <tr>
+      <td>${id}</td>
+      <td>${escapeHtml(member.name)}</td>
+      <td>${escapeHtml(member.phone)}</td>
+      <td class="${statusClass}">${member.status.toUpperCase()}</td>
+      <td>${member.monthlyTarget.toFixed(2)}</td>
+      <td>${monthsPaid}</td>
+      <td>${monthsUnpaid}</td>
+      <td>${totalArrears.toFixed(2)}</td>
+      <td><button onclick="deleteMember('${id}')" class="green">Delete</button></td>
+    </tr>`;
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function searchMember() {
   const id = document.getElementById('memberSearchId').value.trim();
   const m = members[id];
   const tbody = document.querySelector('#memberTable tbody');
+  const paymentTbody = document.querySelector('#paymentHistoryTable tbody');
+  
   if (m) {
     document.getElementById('memberTable').classList.remove('hidden');
-    const balance = m.target - m.contributed;
-    tbody.innerHTML = `<tr><td>${id}</td><td>${m.name}</td><td>${m.phone}</td><td>${m.target}</td><td>${m.contributed}</td><td>${balance}</td></tr>`;
+    document.getElementById('memberDetails').classList.remove('hidden');
+    
+    const monthsPaid = calculateMonthsPaid(m);
+    const monthsUnpaid = m.monthsUnpaid || 0;
+    const totalArrears = monthsUnpaid * m.monthlyTarget;
+    const statusClass = m.status === 'active' ? 'status-active' : 'status-inactive';
+    
+    // Member summary
+    tbody.innerHTML = `
+      <tr>
+        <td>${id}</td>
+        <td>${escapeHtml(m.name)}</td>
+        <td>${escapeHtml(m.phone)}</td>
+        <td class="${statusClass}">${m.status.toUpperCase()}</td>
+        <td>${m.monthlyTarget.toFixed(2)}</td>
+        <td>${monthsPaid}</td>
+        <td>${monthsUnpaid}</td>
+        <td>${totalArrears.toFixed(2)}</td>
+      </tr>`;
+    
+    // Payment history
+    paymentTbody.innerHTML = '';
+    if (m.paymentHistory && m.paymentHistory.length > 0) {
+      const monthNames = ["January", "February", "March", "April", "May", "June", 
+                         "July", "August", "September", "October", "November", "December"];
+      m.paymentHistory.forEach(payment => {
+        paymentTbody.innerHTML += `
+          <tr>
+            <td>${monthNames[payment.month - 1]}</td>
+            <td>${payment.year}</td>
+            <td>${payment.amount.toFixed(2)}</td>
+          </tr>`;
+      });
+    } else {
+      paymentTbody.innerHTML = '<tr><td colspan="3">No payment history found</td></tr>';
+    }
   } else {
     alert("Member not found.");
     document.getElementById('memberTable').classList.add('hidden');
+    document.getElementById('memberDetails').classList.add('hidden');
+  }
+}
+
+function deleteMember(id) {
+  if (confirm(`Are you sure you want to delete member ${id}?`)) {
+    delete members[id];
+    saveData();
+    displayAdminTable();
+  }
+}
+
+function saveData() {
+  try {
+    localStorage.setItem('welfareMembers', JSON.stringify(members));
+  } catch (e) {
+    console.error("Error saving data:", e);
+    alert("Error saving data. Please try again.");
   }
 }
 
 function downloadCSV() {
-  let csv = "ID,Name,Phone,Target,Contributed,Balance\n";
-  for (const id in members) {
-    const m = members[id];
-    const balance = m.target - m.contributed;
-    csv += `${id},${m.name},${m.phone},${m.target},${m.contributed},${balance}\n`;
+  try {
+    // Prepare CSV header
+    let csv = "ID,Name,Phone,Status,Monthly Target,Months Paid,Months Unpaid,Total Arrears,Payment History\n";
+    
+    // Sort members by ID
+    const sortedIds = Object.keys(members).sort();
+    
+    // Add each member's data to CSV
+    for (const id of sortedIds) {
+      const m = members[id];
+      const monthsPaid = calculateMonthsPaid(m);
+      const monthsUnpaid = m.monthsUnpaid || 0;
+      const totalArrears = monthsUnpaid * m.monthlyTarget;
+      
+      // Format payment history
+      let paymentHistory = formatPaymentHistory(m.paymentHistory);
+      
+      // Escape fields for CSV
+      const escapedName = `"${(m.name || '').replace(/"/g, '""')}"`;
+      const escapedPhone = `"${(m.phone || '').replace(/"/g, '""')}"`;
+      const escapedHistory = `"${paymentHistory.replace(/"/g, '""')}"`;
+      
+      // Add member's data to CSV
+      csv += `${id},${escapedName},${escapedPhone},${m.status || 'active'},${(m.monthlyTarget || 0).toFixed(2)},${monthsPaid},${monthsUnpaid},${totalArrears.toFixed(2)},${escapedHistory}\n`;
+    }
+    
+    // Create download link
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `welfare_contributions_${new Date().toISOString().slice(0,10)}.csv`);
+    
+    // Trigger download
+    document.body.appendChild(link);
+    link.click();
+    
+    // Clean up
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }, 100);
+    
+  } catch (error) {
+    console.error("Error generating CSV:", error);
+    alert("Error generating CSV file. Please try again.");
   }
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'welfare_contributions.csv';
-  link.click();
+}
+
+function formatPaymentHistory(paymentHistory) {
+  if (!paymentHistory || paymentHistory.length === 0) return "No payments";
+  
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return paymentHistory
+    .map(payment => {
+      const monthName = monthNames[payment.month - 1] || payment.month;
+      return `${monthName} ${payment.year}: KSh${payment.amount.toFixed(2)}`;
+    })
+    .join('; ');
+}
+
+function clearRegistrationForm() {
+  document.getElementById('regId').value = '';
+  document.getElementById('regName').value = '';
+  document.getElementById('regPhone').value = '';
+  document.getElementById('regMonthlyTarget').value = '';
+}
+
+function clearContributionForm() {
+  document.getElementById('contribId').value = '';
+  document.getElementById('contribAmount').value = '';
+}
+
+function clearArrearsForm() {
+  document.getElementById('arrearsId').value = '';
+  document.getElementById('arrearsMonths').value = '';
+}
+
+function goHome() {
+  const currentSection = document.querySelector('main > div:not(.hidden)');
+  const welcomePage = document.getElementById('welcomePage');
+  animateSectionTransition(currentSection, welcomePage);
 }
 </script>
 
